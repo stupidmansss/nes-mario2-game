@@ -1,25 +1,28 @@
 const canvas = document.getElementById('nes-canvas');
-const context = canvas.getContext('2d');
-const imageData = context.getImageData(0, 0, 256, 240);
+const ctx = canvas.getContext('2d');
+const imageData = ctx.getImageData(0, 0, 256, 240);
 
 const nes = new jsnes.NES({
-  onFrame: function(buffer) {
-    for (let i = 0; i < buffer.length; i++) {
-      imageData.data[i * 4 + 0] = (buffer[i] >> 16) & 0xFF;
-      imageData.data[i * 4 + 1] = (buffer[i] >> 8) & 0xFF;
-      imageData.data[i * 4 + 2] = buffer[i] & 0xFF;
-      imageData.data[i * 4 + 3] = 0xFF;
+  onFrame: function(frameBuffer) {
+    for (let i = 0; i < frameBuffer.length; i++) {
+      imageData.data[i * 4 + 0] = (frameBuffer[i] >> 16) & 0xFF; // Red
+      imageData.data[i * 4 + 1] = (frameBuffer[i] >> 8) & 0xFF;  // Green
+      imageData.data[i * 4 + 2] = frameBuffer[i] & 0xFF;         // Blue
+      imageData.data[i * 4 + 3] = 0xFF;                          // Alpha
     }
-    context.putImageData(imageData, 0, 0);
-  }
+    ctx.putImageData(imageData, 0, 0);
+  },
+  onStatusUpdate: function() {},
+  onAudioSample: function() {}
 });
 
-// Load the ROM file (e.g., "mario.nes")
 fetch('mario.nes')
   .then(response => response.arrayBuffer())
   .then(buffer => {
-    const binaryString = new Uint8Array(buffer)
-      .reduce((data, byte) => data + String.fromCharCode(byte), '');
-    nes.loadROM(binaryString);
+    const romData = new Uint8Array(buffer);
+    nes.loadROM(romData);
     nes.start();
+  })
+  .catch(err => {
+    console.error("Failed to load ROM:", err);
   });
