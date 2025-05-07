@@ -16,7 +16,7 @@ const nes = new jsnes.NES({
   onAudioSample: function() {}
 });
 
-fetch('mario.nes')
+fetch('nes-mario2-game/mario.nes')
   .then(response => response.arrayBuffer())
   .then(buffer => {
     const romData = new Uint8Array(buffer);
