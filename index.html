@@ -1,13 +1,30 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Play NES Game</title>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
+  <title>NES Emulator - Mario</title>
+  <style>
+    body {
+      background: #111;
+      color: #fff;
+      text-align: center;
+      font-family: sans-serif;
+      margin-top: 40px;
+    }
+    canvas {
+      border: 4px solid #fff;
+      image-rendering: pixelated;
+    }
+  </style>
 </head>
 <body>
-  <h1>NES Emulator</h1>
+  <h1>Play Mario (NES) in Your Browser</h1>
   <canvas id="nes-canvas" width="256" height="240"></canvas>
+
+  <!-- JSNES Emulator Library -->
   <script src="https://unpkg.com/jsnes@0.8.0/dist/jsnes.min.js"></script>
+
+  <!-- Your Emulator Code -->
   <script src="emulator.js"></script>
 </body>
 </html>
